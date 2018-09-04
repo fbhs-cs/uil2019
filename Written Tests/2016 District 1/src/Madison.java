@@ -18,15 +18,7 @@ public class Madison {
 			eq = eq.replaceAll("\\+", " || ");
 			eq = eq.replaceAll("\\*", " && ");
 			Object obj = engine.eval(eq);
-			if(obj instanceof Integer) {
-				if(obj == (Object)1) {
-					out.println("true");
-				}else {
-					out.println("false");
-				}
-			}else {
-				out.println(obj);
-			}
+			out.println(obj == (Object)1);
 		}
 		in.close();
 	}
