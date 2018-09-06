@@ -15,45 +15,59 @@ public class Patricio {
 			double y = in.nextDouble();
 			int t = in.nextInt();
 			eq = eq.substring(4);
-			eq = Replace(eq, "x", x);
-			eq = Replace(eq, "y", y);
-			eq = Replace(eq, "t", t);
+			eq = ReplaceVal(eq, "x", x);
+			eq = ReplaceVal(eq, "y", y);
+			eq = ReplaceVal(eq, "t", t);
+			eq = ReplacePower(eq);
 			out.println(eq);
-			//double z = (double)engine.eval(eq);
-			//out.printf("Patricio should launch at x=%f and y=%f at t=%d at a height of %f.", x, y, t, z);
 		}
 		in.close();
+	}
+	
+	public static String ReplacePower(String eq) {
+		ArrayList<String> arr = new ArrayList<String>();
+		ArrayList<String> ops = new ArrayList<String>();
+		String[] temp = eq.split(" ");
+		for(String s : temp) {
+			if(s.equals("+") || s.equals("-") || s.equals("/") || s.equals("*")) {
+				ops.add(s);
+			}else {
+				arr.add(s);
+			}
+		}
+		
+		return eq;
+	}
+	
+	public static String ReplaceVal(String eq, String let, Object val) {
+		if(val instanceof Integer) {
+			while(eq.contains(let)) {
+				int loc = eq.indexOf(let);
+				if(loc > 0 && isNumeric(eq.substring(loc-1, loc))) {
+					eq = eq.substring(0, loc) + "*" + eq.substring(loc).replaceFirst(let, Integer.toString((int)val));
+				}else {
+					eq = eq.replaceFirst(let, Integer.toString((int)val));
+				}
+			}
+		}else {
+			while(eq.contains(let)) {
+				int loc = eq.indexOf(let);
+				if(loc > 0 && isNumeric(eq.substring(loc-1, loc))) {
+					eq = eq.substring(0, loc) + "*" + eq.substring(loc).replaceFirst(let, Double.toString((double)val));
+				}else {
+					eq = eq.replaceFirst(let, Double.toString((double)val));
+				}
+			}
+		}
+		return eq;
 	}
 	
 	public static Boolean isNumeric(String str) {
 		try {
 			int a = Integer.parseInt(str);
-		}catch(NumberFormatException e) {
+		}catch(Exception e) {
 			return false;
 		}
 		return true;
-	}
-	
-	public static String Replace(String str, String c, Object obj) {
-		if(obj instanceof Integer) {
-			while(str.contains(c)) {
-				int index = str.indexOf(c);
-				if(index != 0 || isNumeric(str.substring(index-1, index))) {
-					str = str.replaceFirst(c, "\\*" + Integer.toString((Integer)obj));
-				}else {
-					str = str.replaceFirst(c, Integer.toString((Integer)obj));
-				}
-			}
-		}else {
-			while(str.contains(c)) {
-				int index = str.indexOf(c);
-				if(index != 0 || isNumeric(str.substring(index-1, index))) {
-					str = str.replaceFirst(c, "\\*" + Double.toString((Double)obj));
-				}else {
-					str = str.replaceFirst(c, Double.toString((Double)obj));
-				}
-			}
-		}
-		return str;
 	}
 }
