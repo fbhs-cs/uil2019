@@ -1,0 +1,5 @@
+http://ceadserv1.nku.edu/longa//classes/mat385_resources/docs/matrix.html
+
+multiplying the matrix by itself results in a new matrix that shows how many paths between nodes in 2 hops.
+multiplying the matrix by itself twice results in a new matrix that shows how many paths between nodes in 3 hops.
+etc.
