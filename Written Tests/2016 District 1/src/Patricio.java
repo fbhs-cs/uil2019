@@ -1,12 +1,11 @@
 import java.util.*;
 import java.io.*;
 import static java.lang.System.*;
-import javax.script.*;
+// Engine eval runs at 0.001 sec, parser runs at 0.0004 - 0.0 sec
 
 public class Patricio {
-	public static void main(String[] args) throws IOException, ScriptException {
+	public static void main(String[] args) throws IOException {
 		Scanner in = new Scanner(new File("patricio.dat"));
-		ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
 		int amt = in.nextInt();
 		while(amt-- > 0) {
 			in.nextLine();
@@ -16,19 +15,16 @@ public class Patricio {
 			int maxT = in.nextInt();
 			eq = eq.substring(4);
 			eq = AddMult(eq);
-			eq = ReplacePower(eq);
 			Object[] res = {0.0, 0.0, 0, 0.0};
 			for(double x = 0; x <= maxX; x+=0.1) {
 				for(double y = 0; y <= maxY; y+=0.1) {
 					for(int t = 0; t <= maxT; t++) {
 						String temp = eq;
-						temp = temp.replaceAll("Math", "Maah");
 						temp = temp.replaceAll("x", Double.toString(x));
 						temp = temp.replaceAll("y", Double.toString(y));
 						temp = temp.replaceAll("t", Integer.toString(t));
-						temp = temp.replaceAll("Maah", "Math");
-						double z = (double)engine.eval(temp);
-						if(!(z >= Double.MAX_VALUE) && z > (double)res[3]) {
+						double z = new Parser(temp).parse();
+						if(z < Double.MAX_VALUE && z > (double)res[3]) {
 							res[0] = x;
 							res[1] = y;
 							res[2] = t;
@@ -42,58 +38,6 @@ public class Patricio {
 		in.close();
 	}
 	
-	public static int findNextOp(String str, int loc) {
-		int[] arr = new int[4];
-		int res = 0;
-		arr[0] = str.indexOf("+", loc);
-		arr[1] = str.indexOf("-", loc);
-		arr[2] = str.indexOf("/", loc);
-		arr[3] = str.indexOf("*", loc);
-		for(int a : arr) {
-			if(a > res) {
-				res = a;
-			}
-		}
-		return res;
-	}
-
-	public static int findFirstOp(String str, int loc) {
-		str = str.substring(0, loc);
-		int[] arr = new int[4];
-		int res = 0;
-		arr[0] = str.indexOf("+");
-		arr[1] = str.indexOf("-");
-		arr[2] = str.indexOf("/");
-		arr[3] = str.indexOf("*");
-		for(int a : arr) {
-			if(a > res) {
-				res = a;
-			}
-		}
-		return res;
-	}
-	
-	public static String ReplacePower(String eq) {
-		String[] arr = eq.split(" ");
-		for(int i = 0; i < arr.length; i++) {
-			if(!(arr[i].equals("+") || arr[i].equals("-") || arr[i].equals("*") || arr[i].equals("/")) && arr[i].contains("^")) {
-				int loc = arr[i].indexOf("^");
-				int firstOp = findFirstOp(arr[i], loc);
-				int nextOp = findNextOp(arr[i], loc);
-				if(firstOp > 0 && nextOp > 0) {
-					arr[i] = arr[i].substring(0, firstOp+1) + "Math.pow((" + arr[i].substring(firstOp+1, loc) + ")," + "(" + arr[i].substring(loc+1, nextOp) + "))" + arr[i].substring(nextOp);
-				}else if(firstOp > 0) {
-					arr[i] = arr[i].substring(0, firstOp+1) + "Math.pow((" + arr[i].substring(firstOp+1, loc) + ")," + "(" + arr[i].substring(loc+1) + "))";
-				}else if(nextOp > 0) {
-					arr[i] = "Math.pow((" + arr[i].substring(0, loc) + ")," + "(" + arr[i].substring(loc+1, nextOp) + "))" + arr[i].substring(nextOp);
-				}else {
-					arr[i] = "Math.pow((" + arr[i].substring(0, loc) + ")," + "(" + arr[i].substring(loc+1) + "))";
-				}
-			}
-		}
-		return String.join(" ", arr);
-	}
-	
 	public static String AddMult(String eq) {
 		for(int i = 0; i < eq.length(); i++) {
 			try {
@@ -103,5 +47,99 @@ public class Patricio {
 			}catch(Exception e) {}
 		}
 		return eq;
+	}
+}
+
+class Parser {
+	int pos = -1, c;
+	String str;
+
+	public Parser(String str) {
+		this.str = str;
+	}
+
+	void eatChar() {
+		c = (++pos < str.length()) ? str.charAt(pos) : -1;
+	}
+
+	void eatSpace() {
+		while (Character.isWhitespace(c))
+			eatChar();
+	}
+
+	double parse() {
+		eatChar();
+		double v = parseExpression();
+		if (c != -1)
+			throw new RuntimeException("Unexpected: " + (char) c);
+		return v;
+	}
+
+	double parseExpression() {
+		double v = parseTerm();
+		for (;;) {
+			eatSpace();
+			if (c == '+') {
+				eatChar();
+				v += parseTerm();
+			} else if (c == '-') {
+				eatChar();
+				v -= parseTerm();
+			} else {
+				return v;
+			}
+		}
+	}
+
+	double parseTerm() {
+		double v = parseFactor();
+		for (;;) {
+			eatSpace();
+			if (c == '/') {
+				eatChar();
+				v /= parseFactor();
+			} else if (c == '*') {
+				eatChar();
+				v *= parseFactor();
+			} else {
+				return v;
+			}
+		}
+	}
+
+	double parseFactor() {
+		double v;
+		boolean negate = false;
+		eatSpace();
+		for (;;) {
+			if (c == '+' || c == '-') {
+				negate = c == '-';
+				eatChar();
+				eatSpace();
+			}
+			if (c == '(') {
+				eatChar();
+				v = parseExpression();
+				if (c == ')')
+					eatChar();
+			} else {
+				StringBuilder sb = new StringBuilder();
+				while ((c >= '0' && c <= '9') || c == '.') {
+					sb.append((char) c);
+					eatChar();
+				}
+				if (sb.length() == 0)
+					throw new RuntimeException("Unexpected: " + (char) c);
+				v = Double.parseDouble(sb.toString());
+			}
+			eatSpace();
+			if (c == '^') {
+				eatChar();
+				v = Math.pow(v, parseFactor());
+			}
+			if (negate)
+				v = -v;
+			return v;
+		}
 	}
 }
