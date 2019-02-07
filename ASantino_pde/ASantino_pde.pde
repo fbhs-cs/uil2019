@@ -1,5 +1,11 @@
-int rows = 25;
-int cols = 25;
+import java.util.Scanner;
+
+int rows;
+int cols;
+int startX;
+int startY;
+int endX;
+int endY;
 Spot[][] grid;
 ArrayList<Spot> closedSet;
 ArrayList<Spot> openSet;
@@ -8,30 +14,74 @@ Spot end;
 Spot current;
 ArrayList<Spot> path;
 boolean done;
-
+String map;
 int heuristic(Spot a, Spot b) {
   // Manhattan distance
-  return Math.abs(a.i - b.i) + Math.abs(a.j - b.j);
+  //return Math.abs(a.i - b.i) + Math.abs(a.j - b.j);
+  return 2;
 }
 void setup() {
   size(400, 400);
+
+  /********************* CASE #1 ***********************/
+  rows = 4;
+  cols = 4;
+  map = "E SW SW W\nN S NE SW\nNW SE SE N\nNE NW E SW";
+  startX = 0;
+  startY = 0;
+  endX = 3;
+  endY = 3;
+  /*****************************************************/
+  /********************* CASE #2 ************************
+   rows = 2;
+   cols = 3;
+   map = "S E S\nW N NE";
+   startX = 0;
+   startY = 1;
+   endX = 1;
+   endY = 0;
+   ******************************************************/
+  /********************* CASE #3 ************************
+   rows = 4;
+   cols = 3;
+   map = "N NE S\nSW E NW\nW E SE\nS E N";
+   startX = 2;
+   startY = 1;
+   endX = 2;
+   endY = 1;
+   ******************************************************/
+   
+   
+   
   done = false;
   openSet = new ArrayList<Spot>();
   closedSet = new ArrayList<Spot>();
   path = new ArrayList<Spot>();
   grid = new Spot[rows][cols];
 
+  Scanner in = new Scanner(map);
   // Create grid of spots
   for (int i=0; i<grid.length; i++) {
     for (int j=0; j<grid[i].length; j++) {
-      grid[i][j] = new Spot(i, j, width/rows, width/cols);
+      String n = in.next();
+      println(n);
+      grid[i][j] = new Spot(i, j, n, width/rows, width/cols);
     }
   }
   // Create get neigboards
   for (int i=0; i<grid.length; i++) {
     for (int j=0; j<grid[i].length; j++) {
       grid[i][j].getNeighbors(grid);
-      println("neighbors added" + i + " " + j);
+    }
+  }
+
+  // print neighbors
+  for (int i = 0; i < grid.length; i++) {
+    for (int j=0; j< grid[i].length; j++) {
+      println("Box: " + j + ", " + i);
+      for (Spot n : grid[i][j].neighbors) {
+        println(n.j + ", " + n.i);
+      }
     }
   }
   // draw grid
@@ -41,8 +91,8 @@ void setup() {
     }
   }
 
-  start = grid[0][0];
-  end = grid[rows-1][cols-1];
+  start = grid[startY][startX];
+  end = grid[endY][endX];
   start.wall = false;
   end.wall = false;
   start.g = 0;
@@ -74,7 +124,7 @@ void draw() {
       done = true;
       noLoop();
 
-      
+
       //return;
     }
     closedSet.add(current);
@@ -92,13 +142,14 @@ void draw() {
 
 
     for (Spot neighbor : current.neighbors) {
+      println(current.j + ", " + current.i + ": " + neighbor.j + ", " + neighbor.i);
       if (closedSet.contains(neighbor)) {
         continue;
       }
 
       int tempG = current.g + 1;
 
-      if (!openSet.contains(neighbor) && !neighbor.wall) {
+      if (!openSet.contains(neighbor)) {
         openSet.add(neighbor);
       } else if (tempG >= neighbor.g) {
         continue;
@@ -119,9 +170,9 @@ void draw() {
     for (Spot s : path) {
       s.drawSpot(color(0, 0, 255));
     }
-    
-    if(done) {
-      println(path.size());
+
+    if (done) {
+      println(path.size()-1);
     }
   }
 }
