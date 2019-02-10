@@ -1,5 +1,5 @@
-int rows = 50;
-int cols = 50;
+int rows = 25;
+int cols = 25;
 Spot[][] grid;
 ArrayList<Spot> closedSet;
 ArrayList<Spot> openSet;
