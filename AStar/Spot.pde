@@ -20,7 +20,7 @@ class Spot {
     this.spotHeight = spotHeight;
     this.neighbors = new ArrayList<Spot>();
     this.prev = null;
-    if (Math.random()<0.50) {
+    if (Math.random()<0.20) {
       this.wall = true;
     }
   }
@@ -38,21 +38,21 @@ class Spot {
     if (this.j < grid[i].length-1) {
       neighbors.add(grid[i][j+1]);
     }
-    if (this.i > 0 && this.j < grid[i].length-1) {
-      neighbors.add(grid[i-1][j+1]);
-    }
+    //if (this.i > 0 && this.j < grid[i].length-1) {
+    //  neighbors.add(grid[i-1][j+1]);
+    //}
     
-    if (this.i < grid.length-1 && this.j < grid[i].length-1) {
-      neighbors.add(grid[i+1][j+1]);
-    }
+    //if (this.i < grid.length-1 && this.j < grid[i].length-1) {
+    //  neighbors.add(grid[i+1][j+1]);
+    //}
     
-    if (this.i < grid.length-1 && this.j > 0) {
-      neighbors.add(grid[i+1][j-1]);
-    }
+    //if (this.i < grid.length-1 && this.j > 0) {
+    //  neighbors.add(grid[i+1][j-1]);
+    //}
     
-    if (this.i > 0 && this.j >0 ) {
-      neighbors.add(grid[i-1][j-1]);
-    }
+    //if (this.i > 0 && this.j >0 ) {
+    //  neighbors.add(grid[i-1][j-1]);
+    //}
   }
   void drawSpot(color col) {
 

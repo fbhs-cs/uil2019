@@ -12,7 +12,6 @@ Spot end;
 ArrayList<Spot> path;
 
 void setup() {
-  
   size(400, 400);
   rows = 25;
   cols = 25;
@@ -26,7 +25,7 @@ void setup() {
     }
   }
   start = grid[sr][sc];
-  end = grid[21][17];
+  end = grid[rows-1][cols-1];
   start.wall = false;
   end.wall = false;
   
