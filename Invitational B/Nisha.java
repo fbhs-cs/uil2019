@@ -13,29 +13,21 @@ public class Nisha {
     }
 
     public static void main(String[] args) throws IOException {
+
+        // make an array of the number of ones less than or equal to 2^k
+
+        long[] numOnes = new long[51]; // largest is k = 50
+        long p = 1; // initial number of ones
+        for (int k = 1; k <= 50; k++) {
+            numOnes[k] = 2L * numOnes[k - 1] + p;
+            p *= 2L;
+        }
+
         Scanner in = new Scanner(new File("nisha_judge.dat"));
-        int n = in.nextInt();
-        int caseNum = 1;
-        while (n-- > 0) {
-
+        int T = in.nextInt();
+        for (int caseNum = 1; caseNum <= T; caseNum++) {
             int k = in.nextInt();
-
-            BigInteger countOnes = BigInteger.ZERO;
-            for (int digits = 0; digits < k; digits++) {
-                int numOnes = 2;
-                for (int ones = 1; ones <= digits; ones++) {
-                    // countOnes += numOnes * n!/((n-r)!*r!)
-                    // where n = number of digits and r = number of ones to try
-                    countOnes = countOnes.add(BigInteger.valueOf(numOnes).multiply(fact(digits).divide(fact(ones).multiply(fact(digits - ones)))));
-                    numOnes++;
-                }
-
-                countOnes = countOnes.add(BigInteger.ONE);
-            }
-            countOnes = countOnes.add(BigInteger.ONE);
-            System.out.printf("Case %d: %d\n", caseNum, countOnes);
-
-            caseNum++;
+            System.out.printf("Case %d: %d\n", caseNum, numOnes[k]+1);
         }
 
     }
