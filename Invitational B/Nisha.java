@@ -24,6 +24,8 @@ public class Nisha {
             for (int digits = 0; digits < k; digits++) {
                 int numOnes = 2;
                 for (int ones = 1; ones <= digits; ones++) {
+                    // countOnes += numOnes * n!/((n-r)!*r!)
+                    // where n = number of digits and r = number of ones to try
                     countOnes = countOnes.add(BigInteger.valueOf(numOnes).multiply(fact(digits).divide(fact(ones).multiply(fact(digits - ones)))));
                     numOnes++;
                 }
