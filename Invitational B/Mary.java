@@ -23,17 +23,19 @@ public class Mary {
             char[] word = new char[numWheels];
             int row = 0;
             int col = 0;
-            int colLeftOff = 0;
+            int[] colLeftOff = new int[numWheels/2+1];
+            boolean found = false;
             while (row < numWheels / 2) {
-                col = colLeftOff;
-                boolean found = false;
+                col = colLeftOff[row];
+                
                 while (col < toy.get(row).length()) {
+                    found = false;
                     char top = toy.get(row).charAt(col);
                     int index = toy.get(toy.size() - 1 - row).indexOf(top); // first index in bottom
                     int last = toy.get(toy.size() - 1 - row).lastIndexOf(top); // last index in bottom
                     if (index == -1) { // top not in bottom
                         col++;
-                        break;
+                        continue;
                     } else {
                         
                     }
@@ -46,7 +48,7 @@ public class Mary {
                     // out.println(" " + word[row]);
                     word[word.length - 1 - row] = toy.get(row).charAt(col);
                     row++;
-                    colLeftOff = col;
+                    colLeftOff[row] = col;
                     if (row >= numWheels / 2)
                         break;
                     col = 0;
@@ -63,16 +65,17 @@ public class Mary {
                 word[numWheels / 2] = toy.get(numWheels / 2).charAt(0);
             }
 
-            String out = "";
+            String outStr = "";
             for (char c : word) {
-                out += c;
+                outStr += c;
             }
             if (possible)
-                words.put(out, numTurns);
+                words.put(outStr, numTurns);
 
             List<Integer> values = new ArrayList<Integer>(words.values());
             List<String> keys = new ArrayList<String>(words.keySet());
-
+            //out.println(values);
+            //out.println(keys);
             Collections.sort(values);
             if (values.size() > 1 && values.get(0) == values.get(1)) { // same number of turns
                 ArrayList<String> ans = new ArrayList<String>();
