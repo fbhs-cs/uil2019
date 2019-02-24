@@ -23,87 +23,62 @@ public class Mary {
             char[] word = new char[numWheels];
             int row = 0;
             int col = 0;
-            int[] colLeftOff = new int[numWheels/2+1];
-            for(int i = 0;i<colLeftOff.length;i++) {
-                colLeftOff[i] = 0;
-            }
-            boolean found = false;
-            while(1==1) {
-                //out.println(row);
-                while (row < numWheels / 2) {
-                    col = colLeftOff[row];
-                    
-                    while (col < toy.get(row).length()) {
-                        //out.println(row + " " + col);
-                        found = false;
-                        char top = toy.get(row).charAt(col);
-                        int index = toy.get(toy.size() - 1 - row).indexOf(top); // first index in bottom
-                        int last = toy.get(toy.size() - 1 - row).lastIndexOf(top); // last index in bottom
-                        if (index == -1) { // top not in bottom
-                            col++;
-                            continue;
-                        } else {
-                            
-                        }
-                        found = true;
-                        numTurns += Math.min(col, toy.get(row).length() - 1 - col);
-                        // out.print(col + " ");
-                        // out.print(Math.min(index, toy.get(toy.size() - 1 - row).length() - last));
-                        numTurns += Math.min(index, toy.get(toy.size() - 1 - row).length() - last);
-                        word[row] = toy.get(row).charAt(col);
-                        // out.println(" " + word[row]);
-                        word[word.length - 1 - row] = toy.get(row).charAt(col);
-                        
-                        colLeftOff[row] = col+1;
-                        row++;
-                        if (row >= numWheels / 2)
-                            break;
-                        col = colLeftOff[row+1];
+           
 
+            // out.println(row);
+            while (row < numWheels / 2) {
+                col = 0;
+                while (col < toy.get(row).length()) {
+                    // out.println(row + " " + col);
+
+                    char top = toy.get(row).charAt(col);
+                    int index = toy.get(toy.size() - 1 - row).indexOf(top); // first index in bottom
+                    int last = toy.get(toy.size() - 1 - row).lastIndexOf(top); // last index in bottom
+                    if (index == -1) { // top not in bottom
+                        col++;
+                        continue;
                     }
-                    if (!found) {
-                        colLeftOff[row] = toy.get(row).length();
-                        out.println("IMPOSSIBLE");
-                        possible = false;
+                    int colLast = toy.get(row).lastIndexOf(top);
+
+                    numTurns += Math.min(col, toy.get(row).length() - colLast);
+                    // out.print(col + " ");
+                    // out.print(Math.min(index, toy.get(toy.size() - 1 - row).length() - last));
+                    numTurns += Math.min(index, toy.get(toy.size() - 1 - row).length() - last);
+                    word[row] = toy.get(row).charAt(col);
+                    // out.println(" " + word[row]);
+                    word[word.length - 1 - row] = toy.get(row).charAt(col);
+
+                    row++;
+                    if (row >= numWheels / 2)
                         break;
-                    }
+                    col = 0;
 
                 }
-                if (numWheels % 2 == 1) {
-                    word[numWheels / 2] = toy.get(numWheels / 2).charAt(0);
-                }
-
-                String outStr = "";
-                for (char c : word) {
-                    outStr += c;
-                }
-                if (possible) {
-                    words.put(outStr, numTurns);
-                }
-                
-                boolean done = true;
-                for(int i = 0; i < numWheels/2;i++) {
-                    if(colLeftOff[i] < toy.get(i).length()) {
-                        //out.println(i + " " + colLeftOff[i]);
-                        row = i;
-                        col = colLeftOff[i]+1;
-                        done = false;
-                        
-                    }
-
-                }
-                if(done) {
+                if(col >= toy.get(row).length()) 
                     break;
-                }
-            
-                
+
             }
+            if (numWheels % 2 == 1) {
+                word[numWheels / 2] = toy.get(numWheels / 2).charAt(0);
+            }
+
+            String outStr = "";
+            for (char c : word) {
+                outStr += c;
+            }
+            if (possible) {
+                words.put(outStr, numTurns);
+            }
+
             List<Integer> values = new ArrayList<Integer>(words.values());
             List<String> keys = new ArrayList<String>(words.keySet());
-            out.println(values);
-            out.println(keys);
+            // out.println(values);
+            // out.println(keys);
             Collections.sort(values);
-            if (values.size() > 1 && values.get(0) == values.get(1)) { // same number of turns
+
+            if (values.isEmpty()) {
+                out.println("IMPOSSIBLE");
+            } else if (values.size() > 1 && values.get(0) == values.get(1)) { // same number of turns
                 ArrayList<String> ans = new ArrayList<String>();
                 for (String s : keys) {
                     if (words.get(s) == values.get(0)) {
