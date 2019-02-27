@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class treasure {
+public class treasureDp {
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(new File("treasure.dat"));
 

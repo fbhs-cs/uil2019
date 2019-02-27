@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class treasure {
+public class treasureRec {
 
     public static int recursiveSol(int n, int capacity, int[] w, int[] v) {
         int result = 0;
@@ -19,7 +19,7 @@ public class treasure {
     }
 
     public static void main(String[] args) throws IOException {
-        String pathname = "/home/chad/Dropbox/UIL/uil2019/TAFT2019/treasure.dat";
+        String pathname = "treasure.dat";
         Scanner in = new Scanner(new File(pathname));
         int n = in.nextInt();
         while (n-- > 0) {
