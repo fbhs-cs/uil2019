@@ -1,144 +1,65 @@
 import java.util.*;
 import java.io.*;
+import java.text.*;
+import java.math.*;
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static java.lang.Math.*;
 
-public class word {
+//change the class name
+public class word
+{
+    public void run() throws Exception
+    {
+        Scanner file = new Scanner(new File("word.dat"));
 
-    // count the number of occurences of word in string
-    public static int countWord(String string, String word) {
-        int count = 0;
-        while (string.indexOf(word) > -1) {
-            count++;
-            string = string.substring(string.indexOf(word) + 1);
+        //read in the number at the top of the data file
+        int times = file.nextInt();
+        //pick up the left over enter key
+        file.nextLine();
+        int[][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+        //read in each data set
+        for(int i = 0; i < times; i++)
+        {
+            int r = file.nextInt();
+            int c = file.nextInt();
+            char[][] mat = new char[r][c];
+            for(int j = 0; j < r; j++){
+                mat[j] = file.next().toCharArray();
+            }
+            int output = 0;
+            for(r = 0; r < mat.length; r++){
+                for(c = 0; c < mat[0].length; c++){
+                    output +=   recur(mat, r, c, "word", dirs[0]) +
+                                recur(mat, r, c, "word", dirs[1]) +
+                                recur(mat, r, c, "word", dirs[2]) +
+                                recur(mat, r, c, "word", dirs[3]) +
+                                recur(mat, r, c, "word", dirs[4]) +
+                                recur(mat, r, c, "word", dirs[5]) +
+                                recur(mat, r, c, "word", dirs[6]) +
+                                recur(mat, r, c, "word", dirs[7]);
+                }
+            }
+            System.out.println(output);
         }
-        return count;
-
     }
 
-    public static void findWord(char[][] grid, String word) {
-        int found = 0;
-
-        ArrayList<String> allStrings = new ArrayList<String>();
-        // make all possible strings
-
-        // horizontal forward
-        for (int i = 0; i < grid.length; i++) {
-            String temp = "";
-            for (int j = 0; j < grid[i].length; j++) {
-                temp += grid[i][j];
-            }
-            allStrings.add(temp);
+    public int recur(char[][] mat, int r, int c, String word, int[] dir){
+        if(Math.min(r, c) < 0 || r >= mat.length || c >= mat[0].length || word.length() == 0 || mat[r][c] != word.charAt(0))
+            return 0;
+        if(word.length() == 1){
+            return 1;
         }
-
-        // horizontal backward
-        for (int i = 0; i < grid.length; i++) {
-            String temp = "";
-            for (int j = 0; j < grid[i].length; j++) {
-                temp += grid[i][grid[i].length - 1 - j];
-            }
-            allStrings.add(temp);
-        }
-
-        // vertical
-        for (int i = 0; i < grid.length; i++) {
-            String temp = "";
-            for (int j = 0; j < grid[i].length; j++) {
-                temp += grid[j][i];
-            }
-            allStrings.add(temp);
-        }
-
-        // vertical backward
-        for (int i = 0; i < grid.length; i++) {
-            String temp = "";
-            for (int j = 0; j < grid[i].length; j++) {
-                temp += grid[grid.length - 1 - j][i];
-            }
-            allStrings.add(temp);
-        }
-
-        // diagonal left -> right down
-        for (int k = 0; k < grid.length; k++) {
-            String temp = "";
-            for (int i = 0; i < grid.length; i++) {
-
-                for (int j = 0; j < grid[i].length; j++) {
-                    if (Math.abs(i - j) == k)
-                        temp += grid[i][j];
-                }
-
-            }
-            allStrings.add(temp);
-        }
-
-        // diagonal right -> left up
-        for (int k = 0; k < grid.length; k++) {
-            String temp = "";
-            for (int i = grid.length - 1; i >= 0; i--) {
-
-                for (int j = grid[i].length - 1; j >= 0; j--) {
-                    if (Math.abs(i - j) == k)
-                        temp += grid[i][j];
-                }
-
-            }
-            allStrings.add(temp);
-        }
-
-        // diagonal left -> right up
-        for (int k = 0; k <= 2 * (grid.length - 1); k++) {
-            String temp = "";
-            for (int i = grid.length - 1; i >= 0; i--) {
-
-                for (int j = grid[i].length - 1; j >= 0; j--) {
-                    if (Math.abs(i + j) == k)
-                        temp += grid[i][j];
-                }
-
-            }
-            allStrings.add(temp);
-        }
-
-        // diagonal right -> left down
-        for (int k = 0; k <= 2 * (grid.length - 1); k++) {
-            String temp = "";
-            for (int i = 0; i < grid.length; i++) {
-
-                for (int j = 0; j < grid[i].length; j++) {
-                    if (Math.abs(i + j) == k)
-                        temp += grid[i][j];
-                }
-
-            }
-            allStrings.add(temp);
-        }
-
-        for (String s : allStrings) {
-            if (s.equals(word))
-                found++;
-        }
-        System.out.println(found);
+        String newWord = word.substring(1);
+        return recur(mat, r + dir[0], c + dir[1], newWord, dir);
     }
 
-    public static void main(String[] args) throws IOException {
-        Scanner in = new Scanner(new File("word.dat"));
-
-        int n = in.nextInt();
-
-        while (n-- > 0) {
-            int r = in.nextInt();
-            int c = in.nextInt();
-
-            char[][] grid = new char[r][c];
-
-            for (int i = 0; i < r; i++) {
-                String line = in.next();
-                for (int j = 0; j < c; j++) {
-                    grid[i][j] = line.charAt(j);
-                }
-            }
-
-            findWord(grid, "word");
-
-        }
+    public static void main(String[] args) throws Exception
+    {
+        //change this to whatever your class name is
+        new word().run();
     }
+
 }

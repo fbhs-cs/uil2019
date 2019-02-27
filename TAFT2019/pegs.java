@@ -1,146 +1,106 @@
 import java.util.*;
 import java.io.*;
+import java.text.*;
+import java.math.*;
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static java.lang.Math.*;
 
-public class pegs {
+//change the class name
+public class pegs
+{
 
-    public static int countPegs(char[][] board) {
-        int count = 0;
-        for (char[] row : board) {
-            for (char c : row) {
-                if (c == '@') {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+    public int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    boolean output;
 
-    public static class Board {
-        boolean solved;
-        char[][] board;
+    public void run() throws Exception
+    {
+        Scanner file = new Scanner(new File("pegs.dat"));
 
-        public Board(char[][] board) {
-            this.board = new char[board.length][board[0].length];
-            for (int r = 0; r < board.length; r++) {
-                for (int c = 0; c < board[r].length; c++) {
-                    this.board[r][c] = board[r][c];
-                }
-            }
-            this.solved = false;
-        }
+        //read in the number at the top of the data file
+        int times = file.nextInt();
+        //pick up the left over enter key
+        file.nextLine();
 
-        public int countPegs() {
-            int count = 0;
-            for (char[] row : board) {
-                for (char c : row) {
-                    if (c == '@') {
-                        count++;
-                    }
-                }
-            }
-            return count;
-        }
-
-        public void displayBoard() {
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
-                    System.out.print(board[i][j]);
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
-
-        public void dispSolvable() {
-            if (this.solved) {
-                System.out.println("Solvable!");
-            } else {
-                System.out.println("Impossible.");
-            }
-        }
-
-        public void solvable(Board mainBoard) {
-
-            if (this.countPegs() == 1) {
-                mainBoard.solved = true;
-                //System.out.println("Solvable!");
-                return;
-            }
-
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
-                    if (board[i][j] != '@')
-                        continue;
-
-                    // current spot is a peg check if it can jump something
-                    if (j > 1 && !this.solved) {
-                        if (board[i][j - 1] == '@' && board[i][j - 2] == '.') { // can jump left
-                            Board tempBoard = new Board(board);
-                            tempBoard.board[i][j - 2] = '@';
-                            tempBoard.board[i][j - 1] = '.';
-                            tempBoard.board[i][j] = '.';
-                            tempBoard.solvable(mainBoard);
-                        }
-                    }
-
-                    if (j < board[i].length - 2 && !this.solved) {
-                        if (board[i][j + 1] == '@' && board[i][j + 2] == '.') { // can jump left
-                            Board tempBoard = new Board(board);
-                            tempBoard.board[i][j + 2] = '@';
-                            tempBoard.board[i][j + 1] = '.';
-                            tempBoard.board[i][j] = '.';
-                            tempBoard.solvable(mainBoard);
-                        }
-                    }
-
-                    if (i > 1 && !this.solved) {
-                        if (board[i - 1][j] == '@' && board[i - 2][j] == '.') { // can jump up
-                            Board tempBoard = new Board(board);
-                            tempBoard.board[i - 2][j] = '@';
-                            tempBoard.board[i - 1][j] = '.';
-                            tempBoard.board[i][j] = '.';
-                            tempBoard.solvable(mainBoard);
-                        }
-                    }
-
-                    if (i < board.length - 2 && !this.solved) {
-                        if (board[i + 1][j] == '@' && board[i + 2][j] == '.') { // can jump up
-                            Board tempBoard = new Board(board);
-                            tempBoard.board[i + 2][j] = '@';
-                            tempBoard.board[i + 1][j] = '.';
-                            tempBoard.board[i][j] = '.';
-                            tempBoard.solvable(mainBoard);
-                        }
-                    }
-
-                }
-
-            }
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        Scanner in = new Scanner(new File("pegs.dat"));
-        int n = in.nextInt();
-        while (n-- > 0) {
-            int r = in.nextInt();
-            int c = in.nextInt();
-            //System.out.printf("%d %d\n", r, c);
-            in.nextLine();
+        //read in each data set
+        for(int am = 0; am < times; am++)
+        {
+            int r = file.nextInt();
+            int c = file.nextInt();
+            file.nextLine();
             char[][] board = new char[r][c];
-            for (int i = 0; i < r; i++) {
-                String row = in.nextLine();
-                for (int j = 0; j < row.length(); j++) {
-                    board[i][j] = row.charAt(j);
-
-                }
+            output = false;
+            for(int j = 0; j < r; j++){
+                board[j] = String.format("%-" + r + "s", file.nextLine()).replaceAll(" ", "#").toCharArray();
             }
+            recur(board);
 
-            Board mainBoard = new Board(board);
-            //mainBoard.displayBoard();
-            mainBoard.solvable(mainBoard);
-            mainBoard.dispSolvable();
+            System.out.println(output ? "Solvable!" : "Impossible.");
 
         }
     }
+
+    public void recur(char[][] board){
+        ArrayList<Integer[]> moves = findMoves(board);
+        if(moves.size() == 0){
+            if(oneLeft(board)) output = true;
+            return;
+        }
+        for(int i = 0; i < moves.size(); i++){
+            char [][] temp = new char[board.length][board[0].length];
+            for(int j = 0; j < board.length; j++)
+                for(int k = 0; k < board[0].length; k++)
+                    temp[j][k] = board[j][k];
+            Integer[] move = moves.get(i);
+            int r = move[0];
+            int c = move[1];
+            int dir = move[2];
+            temp[r][c] = '.';
+            temp[r + dirs[dir][0]][c + dirs[dir][1]] = '.';
+            temp[r + dirs[dir][0] * 2][c + dirs[dir][1] * 2] = '@';
+            recur(temp);
+        }
+    }
+
+    public ArrayList<Integer[]> findMoves(char[][] board){
+        ArrayList<Integer[]> moves = new ArrayList<>();
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == '@'){
+                    //up
+                    if(i > 1 && board[i-1][j] == '@' && board[i-2][j] == '.')
+                        moves.add(new Integer[]{i, j, 0});
+                    //right
+                    if(j < board[0].length - 2 && board[i][j+1] == '@' && board[i][j+2] == '.')
+                        moves.add(new Integer[]{i, j, 1});
+                    //down
+                    if(i < board.length - 2 && board[i+1][j] == '@' && board[i+2][j] == '.')
+                        moves.add(new Integer[]{i, j, 2});
+                    //left
+                    if(j > 1 && board[i][j-1] == '@' && board[i][j-2] == '.')
+                        moves.add(new Integer[]{i, j, 3});
+                }
+            }
+        }
+        return moves;
+    }
+
+    public boolean oneLeft(char[][] board){
+        int pegs = 0;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == '@')
+                    pegs++;
+            }
+        }
+        return pegs == 1;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        //change this to whatever your class name is
+        new pegs().run();
+    }
+
 }

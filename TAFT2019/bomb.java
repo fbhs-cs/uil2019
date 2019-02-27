@@ -1,106 +1,70 @@
-
 import java.util.*;
 import java.io.*;
+import java.text.*;
+import java.math.*;
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static java.lang.Math.*;
 
-public class bomb {
+//change the class name
+public class bomb
+{
+    public void run() throws Exception
+    {
+        Scanner file = new Scanner(new File("bomb.dat"));
 
-    public static int blowUp(char[][] map, int startI, int startJ) {
-        int i = startI;
-        int j = startJ;
-        int numEnemies = 0;
-        if (map[i][j] != '.')
-            return 0;
+        //read in the number at the top of the data file
+        int times = file.nextInt();
+        //pick up the left over enter key
+        file.nextLine();
 
-        boolean up = true;
-        boolean left = true;
-        boolean right = true;
-        boolean down = true;
-
-        // check up
-        while (i > 0) {
-            i--;
-            if (map[i][j] == '@') {
-                numEnemies++;
-            } else if (map[i][j] == '#')
-                break;
-
-        }
-
-        // check down
-        i = startI;
-        while (i < map.length - 1) {
-            i++;
-            if (map[i][j] == '@') {
-                numEnemies++;
-            } else if (map[i][j] == '#')
-                break;
-
-        }
-
-        // check left
-        i = startI;
-        while (j > 0) {
-            j--;
-            if (map[i][j] == '@') {
-                numEnemies++;
-            } else if (map[i][j] == '#')
-                break;
-
-        }
-
-        // check right
-        j = startJ;
-        while (j < map[i].length - 1) {
-            j++;
-            if (map[i][j] == '@') {
-                numEnemies++;
-            } else if (map[i][j] == '#')
-                break;
-
-        }
-
-        return numEnemies;
-
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        Scanner in = new Scanner(new File("bomb.dat"));
-        int n = in.nextInt();
-
-        while (n-- > 0) {
-            int r = in.nextInt();
-            int c = in.nextInt();
-
-            char[][] map = new char[r][c];
-            // build map
-            for (int i = 0; i < r; i++) {
-                String row = in.next();
-                for (int j = 0; j < c; j++) {
-                    map[i][j] = row.charAt(j);
-                }
+        //read in each data set
+        for(int i = 0; i < times; i++)
+        {
+            int r = file.nextInt();
+            int c = file.nextInt();
+            char[][] mat = new char[r][c];
+            for(int j = 0; j < r; j++){
+                mat[j] = file.next().toCharArray();
             }
-
-            int mostEnemies = 0;
-            int bestI = 0;
-            int bestJ = 0;
-            // test all bomb locations
-
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map[i].length; j++) {
-                    int numEnemies = blowUp(map, i, j);
-                    // System.out.printf("%d, %d: %d\n", i, j, numEnemies);
-                    if (numEnemies > mostEnemies) {
-                        bestI = i;
-                        bestJ = j;
-                        mostEnemies = numEnemies;
+            int bestr = -1;
+            int bestc = -1;
+            int highest = 0;
+            for(r = 0; r < mat.length; r++){
+                for(c = 0; c < mat[0].length; c++){
+                    if(mat[r][c] == '@') continue;
+                    int curhighest = enemies(r, c, mat);
+                    if(curhighest > highest){
+                        bestr = r;
+                        bestc = c;
+                        highest = curhighest;
                     }
-
                 }
             }
-            System.out.printf("%d, %d\n", bestI, bestJ);
-
+            System.out.println(bestr + ", " + bestc);
         }
-
     }
+
+    public int enemies(int r, int c, char[][] mat){
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int out = 0;
+        for(int i = 0; i < dirs.length; i++){
+            int tr = r;
+            int tc = c;
+            while(Math.min(tr, tc) >= 0 && tr < mat.length && tc < mat[0].length && mat[tr][tc] != '#'){
+                if(mat[tr][tc] == '@') out++;
+                tr += dirs[i][0];
+                tc += dirs[i][1];
+            }
+        }
+        return out;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        //change this to whatever your class name is
+        new bomb().run();
+    }
+
 }

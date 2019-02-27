@@ -1,77 +1,53 @@
 import java.util.*;
 import java.io.*;
+import java.text.*;
+import java.math.*;
 import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static java.lang.Math.*;
 
-public class rain {
-    public static void main(String[] args) throws IOException {
-        Scanner in = new Scanner(new File("rain.dat"));
+//change the class name
+public class rain
+{
+    public void run() throws Exception
+    {
+        Scanner file = new Scanner(new File("rain.dat"));
 
-        int n = in.nextInt();
+        //read in the number at the top of the data file
+        int times = file.nextInt();
+        //pick up the left over enter key
+        file.nextLine();
 
-        while (n-- > 0) {
-            in.nextLine(); // clear newline character
-            in.useDelimiter(" ");
-            ArrayList<Integer> heights = new ArrayList<Integer>();
-            while (in.hasNextInt()) {
-                heights.add(in.nextInt());
+        //read in each data set
+        for(int am = 0; am < times; am++)
+        {
+            String[] input = file.nextLine().split(" ");
+            int[] arr = new int[input.length];
+            for(int j = 0; j < arr.length; j++){
+                arr[j] = Integer.parseInt(input[j]);
             }
-
-            // with delimiter " " it won't find the last element in a line
-            // except at the EOF, so check if there is a newline character,
-            // then reset the delimiter back to default and read in nextInt
-            if (in.hasNextLine()) {
-                in.reset();
-                heights.add(in.nextInt());
+            int[] l = new int[arr.length];
+            l[0] = arr[0];
+            int[] r = new int[arr.length];
+            r[r.length - 1] = arr[arr.length - 1];
+            for(int i = 1; i < l.length; i++){
+                l[i] = Math.max(l[i - 1], arr[i]);
+                r[r.length - 1 - i] = Math.max(r[r.length - i], arr[r.length - 1 - i]);
             }
-
-            // for (int num : heights) {
-            // System.out.println(num);
-            // }
-
-            int left = 0;
-            int right = 1;
-            int water = 0;
-            while (right < heights.size()) {
-                // two buildings with same height are next to each other
-                if (heights.get(left) <= heights.get(left + 1)) {
-                    left++;
-                    right++;
-                    continue;
-                }
-
-                // scan for same height buildings
-                boolean sameHeight = false;
-                for (int i = left + 1; i < heights.size(); i++) {
-                    if (heights.get(i) == heights.get(left)) {
-                        right = i;
-                        sameHeight = true;
-                        break;
-                    }
-                }
-
-                // if no same height buildings are found, find next enclosed area
-                if (!sameHeight && heights.get(right) >= heights.get(right + 1)) {
-                    right++;
-                    continue;
-                } else if (!sameHeight) {
-                    right++;
-                }
-
-                // if we get here, we've found an area to enclose!
-                int leftHeight = heights.get(left);
-
-                int rightHeight = heights.get(right);
-                out.printf("%d -- %d\n", leftHeight, rightHeight);
-                int minHeight = Math.min(leftHeight, rightHeight);
-
-                for (int i = left + 1; i < right; i++) {
-                    water += minHeight - heights.get(i);
-                }
-                left = right;
-                right = left + 1;
-
+            int out = 0;
+            for(int i = 0; i < arr.length; i++){
+                out += Math.min(l[i], r[i]) - arr[i];
             }
-            System.out.println(water);
+            System.out.println(out);
+
         }
     }
+
+    public static void main(String[] args) throws Exception
+    {
+        //change this to whatever your class name is
+        new rain().run();
+    }
+
 }
