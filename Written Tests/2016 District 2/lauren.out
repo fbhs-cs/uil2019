@@ -1,0 +1,11 @@
+SanFrancisco => LosAngeles => NewYork
+Austin => NewYork => London => Istanbul => Calcutta
+Reykjavik => Aarhus => Budapest => Geneva
+a => b => c => d => e
+a => b
+a => b => d => c
+a => b => c => d
+a => b => c => d => e => f => g => h => i => j
+a => b => c => d => e => f => i => h => g => j
+b => a
+Anchorage => Honolulu => Fukuoka => Pyongyang => Vladivostok => Ulaanbaatar => Calcutta => Kabul => Colombo => SiemRiep => Singapore => Darwin => QueensTown =>CapeTown => Kinshasa => Lagos => AddisAbaba => SharmElSheikh => Catania => Geneva => Budapest => Krakow => Aarhus => Reykjavik => Toronto => KansasCity => Guadalajara => GuatemalaCity => Recife => Bariloche

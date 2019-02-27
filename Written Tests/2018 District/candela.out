@@ -1,0 +1,99 @@
+Target diff     = 40
+Calculated diff = 39
+Expected points = 96
+Q# 1, 12 pts, diff 8
+Q# 2, 10 pts, diff 5
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 5,  7 pts, diff 5
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+Q#10,  4 pts, diff 5
+=====
+Target diff     = 30
+Calculated diff = 29
+Expected points = 85
+Q# 1, 12 pts, diff 8
+Q# 2, 10 pts, diff 5
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 10
+Calculated diff = 9
+Expected points = 43
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 50
+Calculated diff = 47
+Expected points = 98
+Q# 1, 12 pts, diff 8
+Q# 2, 10 pts, diff 5
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 5,  7 pts, diff 5
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 8,  2 pts, diff 8
+Q# 9, 14 pts, diff 4
+Q#10,  4 pts, diff 5
+=====
+Target diff     = 25
+Calculated diff = 24
+Expected points = 75
+Q# 1, 12 pts, diff 8
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 26
+Calculated diff = 26
+Expected points = 80
+Q# 2, 10 pts, diff 5
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 5,  7 pts, diff 5
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 29
+Calculated diff = 29
+Expected points = 85
+Q# 1, 12 pts, diff 8
+Q# 2, 10 pts, diff 5
+Q# 3,  8 pts, diff 3
+Q# 4, 12 pts, diff 4
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 14
+Calculated diff = 14
+Expected points = 50
+Q# 5,  7 pts, diff 5
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 13
+Calculated diff = 13
+Expected points = 55
+Q# 4, 12 pts, diff 4
+Q# 6, 13 pts, diff 3
+Q# 7, 16 pts, diff 2
+Q# 9, 14 pts, diff 4
+=====
+Target diff     = 12
+Calculated diff = 12
+Expected points = 16
+Q# 8,  2 pts, diff 8
+Q# 9, 14 pts, diff 4
+=====

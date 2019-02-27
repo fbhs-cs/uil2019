@@ -1,4 +1,4 @@
-3
+11
 3
 SanFrancisco
 NewYork
@@ -35,3 +35,209 @@ Reykjavik Geneva 2379
 Reykjavik Budapest 2443
 Aarhus Budapest 933
 Geneva Budapest 787
+5
+a
+b
+c
+d
+e
+7
+a b 2
+a c 3
+a d 4
+b c 5
+b d 6
+c d 7
+d e 8
+2
+a
+b
+1
+a b 10
+4
+a
+b
+c
+d
+6
+a b 2
+a c 7
+a d 12
+b c 5
+b d 3
+c d 4
+4
+a
+b
+c
+d
+3
+a b 2
+b c 2
+c d 2
+10
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+10
+a b 6
+b c 8
+c d 9
+d e 10
+e f 33
+f g 1000
+g h 393848493
+h i 3848
+i j 392
+j a 38499
+10
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+13
+a b 6
+b d 43
+b c 8
+c d 9
+d e 10
+e f 33
+f g 10
+f i 3
+f j 3
+g h 39
+h i 38
+i j 39
+j a 38
+2
+b
+a
+1
+b a 3
+30
+Anchorage
+Toronto
+KansasCity
+Guadalajara
+GuatemalaCity
+Recife
+Bariloche
+Reykjavik
+Aarhus
+Geneva
+Budapest
+Krakow
+Catania
+SharmElSheikh
+AddisAbaba
+Lagos
+Kinshasa
+CapeTown
+Kabul
+Calcutta
+Colombo
+SiemRiep
+Ulaanbaatar
+Vladivostok
+Pyongyang
+Fukuoka
+Singapore
+Darwin
+QueensTown
+Honolulu
+82
+Anchorage Toronto 4093
+Anchorage KansasCity 3423
+Anchorage Honolulu 2782
+Toronto KansasCity 1001
+Toronto Guadalajara 2400
+Toronto GuatemalaCity 3165
+Toronto Geneva 3970
+Toronto Aarhus 3785
+Toronto Reykjavik 2608
+KansasCity Guadalajara 1600
+KansasCity GuatemalaCity 2354
+Guadalajara GuatemalaCity 1185
+Guadalajara Recife 5048
+GuatemalaCity Recife 4118
+Recife AddisAbaba 5200
+Recife Kinshasa 3497
+Recife Bariloche 3847
+Bariloche Reykjavik 7750
+Bariloche CapeTown 4715
+Reykjavik Aarhus 1515
+Reykjavik Geneva 2379
+Reykjavik Budapest 2443
+Aarhus Budapest 933
+Aarhus Geneva 869
+Geneva Budapest 787
+Geneva Krakow 930
+Geneva Catania 1029
+Geneva SharmElSheikh 2830
+Budapest Krakow 403
+Budapest Catania 1232
+Budapest SharmElSheikh 2959
+Krakow Catania 1454
+Krakow Kabul 3246
+Krakow SharmElSheikh 3206
+Catania SharmElSheikh 2405
+Catania Kabul 3842
+SharmElSheikh AddisAbaba 2143
+SharmElSheikh Lagos 3845
+SharmElSheikh Kinshasa 2543
+SharmElSheikh Calcutta 3368
+SharmElSheikh Colombo 3305
+AddisAbaba Lagos 3515
+AddisAbaba Kinshasa 1820
+AddisAbaba CapeTown 4192
+AddisAbaba Kabul 4789
+Lagos Kinshasa 1149
+Lagos Kabul 5200
+Lagos CapeTown 4401
+Kinshasa CapeTown 2046
+Kinshasa Kabul 4376
+CapeTown Kabul 8000
+CapeTown Colombo 4899
+Kabul Calcutta 1422
+Kabul Colombo 2025
+Kabul SiemRiep 2609
+Calcutta Colombo 1772
+Calcutta SiemRiep 2315
+Calcutta Ulaanbaatar 2025
+Calcutta Singapore 3112
+Calcutta Pyongyang 2469
+Colombo Pyongyang 3606
+Colombo SiemRiep 2500
+Colombo Darwin 3746
+SiemRiep Ulaanbaatar 2390
+SiemRiep Vladivostok 2651
+SiemRiep Pyongyang 2220
+SiemRiep Singapore 1377
+Ulaanbaatar Vladivostok 2000
+Ulaanbaatar Fukuoka 1566
+Vladivostok Pyongyang 1121
+Vladivostok Fukuoka 1566
+Pyongyang Fukuoka 456
+Pyongyang Singapore 2967
+Fukuoka Honolulu 4393
+Singapore Darwin 2083
+Singapore QueensTown 5077
+Singapore Honolulu 6715
+Darwin QueensTown 3159
+Darwin Honolulu 5364
+QueensTown Honolulu 5042
+QueensTown SharmElSheikh 9677
+QueensTown CapeTown 6667
